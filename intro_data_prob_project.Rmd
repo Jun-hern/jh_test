@@ -1,0 +1,93 @@
+---
+title: "Exploring the BRFSS data"
+output: 
+  html_document: 
+    fig_height: 4
+    highlight: pygments
+    theme: spacelab
+---
+
+## Setup
+
+### Load packages
+
+```{r load-packages, message = FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+### Load data
+
+Make sure your data and R Markdown files are in the same directory. When loaded
+your data file will be called `brfss2013`. Delete this note when before you submit 
+your work. 
+
+```{r load-data}
+load("brfss2013.RData")
+```
+
+
+
+* * *
+
+## Part 1: Data
+For the landline telephone-based survey, stratified sampling takes place. The entire US population is divided into strata(the households), where each adult member of a particular stratum is likely to have same socioeconomic status,education level and other factors that might affect the results. Then, an adult member is randomly selected from each stratum. Thus, random sampling is used in landline telephone-based survey. Landline telephone-based survey yields generalisable results as the randomly selected adult from each randomly selected household is likely to represent the entire US population as a whole.
+On the other hand, the result from cellular telephone-based survey is not generalisable since the respondents are restricted to those who own their private residence or are undergraduates in college housing, so the respondents are unlikely to be the representative of the whole US population.
+For both surveys, random assignment does not take place as there is no treatment involved in both surveys.
+
+* * *
+
+## Part 2: Research questions
+
+**Research quesion 1:**
+We might be curious about if depression is correlated to ability to concentrate or remember as well as ability to run errands alone. This may interest many of us due to the fact that as the competition at the workplace getting more and more intense, we may easily get frustrated and end up suffering from depression. Moreover, the recent outbreak of COVID-19 pandemic has led to remarkable increase in rate of unemployment. As a consequence, those breadwinners who lose their job would likely to face depression. Hence, the bad consequences of depression which are related to ability to concentrate or memorise and ability to run the errands alone are worth studying.con
+
+**Research quesion 2:**
+Apart from that, we would like to know whether exercising aids in coping joint symptoms. As all of us know, a large portion of older people face joint symptoms and so have difficulty in carrying out daily activities. Hence, knowing whether exercise would cope with joint symptoms will allow us to deal with them better.
+**Research quesion 3:**
+
+
+* * *
+
+## Part 3: Exploratory data analysis
+
+**Research quesion 1:**
+
+```{r}
+brfss2013<-brfss2013 %>%
+filter(!is.na(addepev2),!is.na(diffalon),addepev2=='Yes') %>%
+mutate(dep_diffalon=ifelse(addepev2=='Yes'& diffalon=='Yes','TRUE','FALSE'))
+
+brfss2013<-brfss2013%>%
+filter(!is.na(addepev2),!is.na(decide),addepev2=='Yes')%>%
+mutate(dep_decide=ifelse(addepev2=='Yes'& decide=='Yes','TRUE','FALSE'))
+
+ggplot(brfss2013,aes(x=dep_diffalon))+geom_bar()
+ggplot(brfss2013,aes(x=dep_decide))+geom_bar()
+
+brfss2013%>%
+summarise(dep_decide_true=sum(addepev2=='Yes' & decide=='Yes')/sum(addepev2=='Yes'))
+
+brfss2013%>%
+summarise(dep_diffalon_true=sum(addepev2=='Yes' & diffalon=='Yes')/sum(addepev2=='Yes'))
+
+```
+Based on the bar chart as well as the probability that a person who has depression disorder faces difficulty in concentrating or memorising and difficulty in running the errands alone, it's evident that a person who faces depression disorder is less likely to face difficulty in running errands alone as well as concentrating and memorising since only approximately 20% of those who face depression have difficulty in running errands alone adn about 30% haved difficulty in memorising and concentrating. so, since we cannot reject the null hypothesis that depression doesn't lead to difficulty in running errands alone as well as concentrating and meomorising, we accept the null hypothesis.
+```
+
+
+
+**Research quesion 2:**
+
+```{r}
+
+```
+
+
+
+**Research quesion 3:**
+
+```{r}
+
+```
+
